@@ -1,0 +1,37 @@
+﻿@page "/fibonacci"
+@rendermode InteractiveServer
+
+<h3>Числа Фибоначчи</h3>
+
+<label for="limit">Количество чисел</label>
+<input id="limit" type="number" @bind="limit" />
+
+<p>@GetNumbers()</p>
+
+@code {
+    private int limit = 10;
+
+    string GetNumbers()
+    {
+        if (limit <= 0)
+            return "";
+
+        long a = 0;
+        long b = 1;
+        string result = "0";
+
+        if (limit == 1)
+            return result;
+
+        for (int i = 1; i < limit; i++)
+        {
+            result += ", " + b;
+
+            long next = a + b;
+            a = b;
+            b = next;
+        }
+
+        return result;
+    }
+}

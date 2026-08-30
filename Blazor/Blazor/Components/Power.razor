@@ -1,0 +1,47 @@
+﻿@page "/power"
+@rendermode InteractiveServer
+
+<h3>Степень числа</h3>
+
+<div>
+    <label for="a">Основание</label>
+    <input id="a" type="number" @bind="a" @bind:after="Calculate" />
+</div>
+<br />
+<div>
+    <label for="n">Степень</label>
+    <input id="n" type="number" @bind="n" @bind:after="Calculate" />
+</div>
+<br />
+<div>
+    <label for="s">Результат</label>
+    <input id="s" type="number" @bind="s" readonly />
+</div>
+
+<h3>@a<sup>@n</sup> = @s</h3>
+<h3>@a<sup>@n</sup> = @Pow()</h3>
+<h3>@a<sup>@n</sup> = @Math.Pow(@a, @n)</h3>
+@code {
+    private int a = 2;
+    private int n = 3;
+    private long s = 8;
+
+    void Calculate()
+    {
+        s = 1;
+
+        for (int i = 0; i < n; i++)
+        {
+            s *= a;
+        }
+    }
+    long Pow()
+    {
+        long result = 1;
+        for(int i = 0; i < n; i++)
+        {
+            result *= a;
+        }
+        return result;
+    }
+}
