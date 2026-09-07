@@ -5,6 +5,10 @@ VisualStudioVersion = 17.14.36221.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor", "Blazor\Blazor.csproj", "{3C43B966-366C-4293-BE12-56D7D75F45FD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TODOList", "TODOList\TODOList.csproj", "{A3CA7E66-6E55-45FD-9324-5D2AB970B146}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movies", "Movies\Movies.csproj", "{6AC6C196-7AB0-4538-A46F-30D7713EE91B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{3C43B966-366C-4293-BE12-56D7D75F45FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C43B966-366C-4293-BE12-56D7D75F45FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C43B966-366C-4293-BE12-56D7D75F45FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3CA7E66-6E55-45FD-9324-5D2AB970B146}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3CA7E66-6E55-45FD-9324-5D2AB970B146}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3CA7E66-6E55-45FD-9324-5D2AB970B146}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3CA7E66-6E55-45FD-9324-5D2AB970B146}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AC6C196-7AB0-4538-A46F-30D7713EE91B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AC6C196-7AB0-4538-A46F-30D7713EE91B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AC6C196-7AB0-4538-A46F-30D7713EE91B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AC6C196-7AB0-4538-A46F-30D7713EE91B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

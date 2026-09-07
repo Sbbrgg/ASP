@@ -1,0 +1,16 @@
+﻿.statistics {
+	display:flex;
+	justify-content:space-between;
+}
+ul{
+	list-style:none;
+}
+input[type=checkbox]:checked + label{
+	color:gray;
+	text-decoration:line-through;
+}
+label{
+	width: 90%;
+	display:inline-flex;
+	justify-content:space-between;
+}
