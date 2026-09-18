@@ -28,7 +28,8 @@ namespace Academy.Models
 
 		//				Navigation properties
 		//	Navigation properties - хранят данные связанных таблиц
-		public Direction Direction { get; set; }
+		public Direction Direction { get; set; } = default!;
+		ICollection<Student> Students { get; set; } = default!;
 
 	}
 }
