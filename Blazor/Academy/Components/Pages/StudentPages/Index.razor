@@ -1,11 +1,10 @@
-@page "/students"
+﻿@page "/students"
 @rendermode InteractiveServer
-@using Microsoft.AspNetCore.Components.QuickGrid
 @using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Components.QuickGrid
 @using Academy.Models
 @implements IAsyncDisposable
 @inject IDbContextFactory<AcademyContext> DbFactory
-@inject NavigationManager NavigationManager
 
 <PageTitle>Index</PageTitle>
 
@@ -16,11 +15,16 @@
 </p>
 
 <QuickGrid Class="table" Items="students">
-@* 	<PropertyColumn Property="student => student.last_name" />
+	@* <PropertyColumn Property="student => student.last_name" />
 	<PropertyColumn Property="student => student.first_name" />
 	<PropertyColumn Property="student => student.middle_name" /> *@
-	@* <PropertyColumn Property="student => student.FullName" Sortable="true"/> *@
-	<TemplateColumn Context="student" Title="Student" Sortable="true" InitialSortDirection="SortDirection.Ascending" SortBy="sortBy">
+
+	@* <PropertyColumn Property="student => student.FullName" Sortable="true" /> *@
+	<TemplateColumn Context="student"
+					Title="Student"
+					Sortable="true"
+					SortBy="sortBy"
+	>
 		@student.FullName
 	</TemplateColumn>
 	<PropertyColumn Property="student => student.birth_date" />
@@ -39,7 +43,7 @@
 	private AcademyContext context = default!;
 	IQueryable<Student> students = default!;
 
-	GridSort<Student> sortBy = GridSort<Student>.ByAscending(s => s.last_name);
+	GridSort<Student> sortBy = GridSort<Student>.ByAscending(s => s.last_name).ThenAscending(s => s.first_name);
 
 	protected override void OnInitialized()
 	{
@@ -50,5 +54,5 @@
 					.ThenInclude(g => g.Direction);
 	}
 
-	public async ValueTask DisposeAsync() => await context.DisposeAsync();
+    public async ValueTask DisposeAsync() => await context.DisposeAsync();
 }

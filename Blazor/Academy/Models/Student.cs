@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Academy.Models
 {
-	public class Student: Human
+	public class Student : Human
 	{
 		[Key]
 		public int stud_id { get; set; }
@@ -12,9 +12,7 @@ namespace Academy.Models
 		[ForeignKey(nameof(Group))]
 		public int group { get; set; }
 
-
-		//			Navigation properties
+		//			Navigation properties:
 		public Group Group { get; set; }
-
 	}
 }
