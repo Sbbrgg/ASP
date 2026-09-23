@@ -7,6 +7,11 @@
 	width: 38%;
 }
 
-.photo-container > img {
-	width: 85%;
+.photo-container img {
+	width: 100%;
+}
+
+.photo-container div {
+	min-height: 384px;
+	border: solid 1px;
 }

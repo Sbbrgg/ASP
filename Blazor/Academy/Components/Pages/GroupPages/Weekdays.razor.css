@@ -1,0 +1,7 @@
+﻿﻿.weekdays {
+	list-style: none;
+	display: flex;
+	justify-content: space-around;
+	/*border:solid 1px;*/
+	padding: 5px;
+}
