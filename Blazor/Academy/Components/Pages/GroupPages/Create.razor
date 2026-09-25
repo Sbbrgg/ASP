@@ -1,4 +1,4 @@
-@page "/groups/create"
+п»ї@page "/groups/create"
 @rendermode InteractiveServer
 
 @using Microsoft.EntityFrameworkCore
@@ -13,29 +13,31 @@
 <h2>Group</h2>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <EditForm method="post" Model="Group" OnValidSubmit="AddGroup" FormName="create" Enhance>
-            <DataAnnotationsValidator />
-            <ValidationSummary class="text-danger" role="alert"/>
-            <div class="mb-3">
-                <span class="text-danger">*</span>
-                <label for="group_name" class="form-label">group_name:</label> 
-                <InputText id="group_name" @bind-Value="Group.group_name" class="form-control" aria-required="true"/> 
-                <ValidationMessage For="() => Group.group_name" class="text-danger" /> 
-            </div>        
-            <div class="mb-3">
-                <span class="text-danger">*</span>
-                <label for="direction" class="form-label">direction:</label> 
-                @* <InputNumber id="direction" @bind-Value="Group.direction" class="form-control" aria-required="true"/>  *@
-
-                <InputSelect id="direction" @bind-Value="Group.direction" class="form-control">
-                    <option disabled selected>--- Выберите направление обучения ---</option>
-                    @using (AcademyContext context = DbFactory.CreateDbContext())
-                    foreach(Direction d in context.Directions)
-                    {
-                        <option value="@d.direction_id">@d.direction_name</option>
-                    }
-                </InputSelect>
+	<div class="col-md-4">
+		<EditForm method="post" Model="Group" OnValidSubmit="AddGroup" FormName="create" Enhance>
+			<DataAnnotationsValidator />
+			<ValidationSummary class="text-danger" role="alert"/>
+			<div class="mb-3">
+				<span class="text-danger">*</span>
+				<label for="group_name" class="form-label">group_name:</label> 
+				<InputText id="group_name" @bind-Value="Group.group_name" class="form-control" aria-required="true"/> 
+				<ValidationMessage For="() => Group.group_name" class="text-danger" /> 
+			</div>        
+			<div class="mb-3">
+				<span class="text-danger">*</span>
+				<label for="direction" class="form-label">direction:</label> 
+				@* <InputNumber id="direction" @bind-Value="Group.direction" class="form-control" aria-required="true"/>  *@
+				
+				<InputSelect id="direction" @bind-Value="Group.direction" class="form-control">
+					<option disabled selected> --- Р’С‹Р±РµСЂРёС‚Рµ РЅР°РїСЂР°РІР»РµРЅРёРё РѕР±СѓС‡РµРЅРёСЏ --- </option>
+					@using (AcademyContext context = DbFactory.CreateDbContext())
+					{
+						@foreach (Direction d in context.Directions)
+						{
+							<option value="@d.direction_id">@d.direction_name</option>
+						}
+					}
+				</InputSelect>
 
                 <ValidationMessage For="() => Group.direction" class="text-danger" /> 
             </div>        
@@ -43,8 +45,8 @@
                 <label for="learning_days" class="form-label">learning_days:</label> 
                 <InputNumber id="learning_days" @bind-Value="Group.learning_days" class="form-control" /> 
                 <ValidationMessage For="() => Group.learning_days" class="text-danger" /> 
-            </div>   *@      
-            <Weekdays Group="@Group"></Weekdays>
+            </div>    *@
+			<Weekdays Group="@Group" />
             <div class="mb-3">
                 <label for="start_time" class="form-label">start_time:</label> 
                 <InputDate Type="InputDateType.Time" id="start_time" @bind-Value="Group.start_time" class="form-control" /> 
@@ -66,9 +68,7 @@
 
 @code {
     [SupplyParameterFromForm]
-    private Group Group { get; set; } = default!;
-
-    protected override void OnInitialized() => Group ??= new();
+    private Group Group { get; set; } = new();
 
     // To protect from overposting attacks, see https://learn.microsoft.com/aspnet/core/blazor/forms/#mitigate-overposting-attacks.
     private async Task AddGroup()
