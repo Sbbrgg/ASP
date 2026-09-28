@@ -5,18 +5,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Academy.Models
 {
 	[PrimaryKey("teacher", "discipline")]
-	public class TeacherDisciplineRelation
+	public class TeachersDisciplinesRelation
 	{
 		[Column("teacher", TypeName = "SMALLINT")]
-		[ForeignKey(nameof(Teacher))]
+		[ForeignKey(nameof(Teachers))]
 		public int teacher {  get; set; }
 
 		[Column("discipline", TypeName = "SMALLINT")]
-		[ForeignKey(nameof(Discipline))]
+		[ForeignKey(nameof(Disciplines))]
 		public int discipline { get; set; }
 
 		//Navigation properies:
-		public Teacher Teacher { get; set; }
-		public Discipline Discipline { get; set; }
+		public Teacher Teachers { get; set; }
+		public Discipline Disciplines { get; set; }
 	}
 }
