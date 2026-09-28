@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Academy.Models
@@ -15,6 +16,6 @@ namespace Academy.Models
 		public string direction_name { get; set; }
 
 		//				Navigation properties
-		public ICollection<Group> Groups {  get; set; }
+		public ObservableCollection<Group> Groups {  get; set; }
 	}
 }

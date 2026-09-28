@@ -1,5 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Academy.Models
 {
@@ -25,17 +27,17 @@ namespace Academy.Models
 				if (work_since > today) return "0 месяцев";
 
 				int months = ((today.Year - work_since.Year) * 12) + today.Month - work_since.Month;
-				if (today.Day < work_since.Day) months--;
+				if (today.Day < work_since.Day) 
+					months--;
 				if (months < 0) months = 0;
 
-				if (months < 12)
+				if (months < 12) //если 0 лет
 				{
-					// Склонение слова "месяц"
 					int lastDigit = months % 10;
 					int lastTwoDigits = months % 100;
 					string suffix = "месяцев";
 
-					if (lastTwoDigits < 11 || lastTwoDigits > 14)
+					if (lastTwoDigits < 11)
 					{
 						if (lastDigit == 1) suffix = "месяц";
 						else if (lastDigit >= 2 && lastDigit <= 4) suffix = "месяца";
@@ -47,8 +49,6 @@ namespace Academy.Models
 				{
 					int years = months / 12;
 					int remainingMonths = months % 12;
-
-					// Склонение слова "год"
 					int lastDigit = years % 10;
 					int lastTwoDigits = years % 100;
 					string yearSuffix = "лет";
@@ -68,6 +68,6 @@ namespace Academy.Models
 		}
 
 		//Navigation properties
-		public ICollection<TeachersDisciplinesRelation> DisciplinesRelations { get; set; } = default!;
+		public ObservableCollection<TeachersDisciplinesRelation> DisciplinesRelations { get; set; } = default!;
 	}
 }

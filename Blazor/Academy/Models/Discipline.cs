@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Academy.Models
 {
@@ -10,7 +11,7 @@ namespace Academy.Models
 		public int discipline_id { get; set; }
 
 		[Required]
-		public string discipline_name { get; set; }
+		public string? discipline_name { get; set; }
 
 		[Required]
 		[Column(TypeName = "TINYINT")]
