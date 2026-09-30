@@ -8,6 +8,6 @@
 		public DateTime EnrollmentDate { get; set; }
 
 		//Navigation properties
-		public ICollection<Enrollment> Enrollments { get; set; }
+		public ICollection<Enrollment>? Enrollments { get; set; }
 	}
 }
