@@ -9,17 +9,26 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<form asp-action="Index" method="get">
+    <div>
+        <label>Поиск по имени: <input type="search" name="SearchString" value="@ViewData["CurrentFilter"]"/></label>
+        <input type="submit" value="Найти" class="btn-default"/>
+        <a asp-action="Index" class="btn btn-secondary">Сброс</a>
+    </div>
+</form>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.last_name)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParam"]">@Html.DisplayNameFor(model => model.last_name)</a>
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.first_name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EnrollmentDate)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["DareSortParam"]">@Html.DisplayNameFor(model => model.EnrollmentDate)</a>
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Enrollments)
