@@ -1,62 +1,63 @@
 @model IEnumerable<ContosoUniversity.Models.Student>
 
 @{
-    ViewData["Title"] = "Index";
+	ViewData["Title"] = "Index";
 }
 
-<h1>Students</h1>
+<div class="controls">
+	<h1>Students</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+	<form asp-action="Index" method="get">
+		<div>
+			<label>Поиск по имени: <input type="search" name="SearchString" value="@ViewData["CurrentFilter"]" /></label>
+			<input type="submit" value="Найти" class="btn-default" />
+			<a asp-action="Index" class="btn btn-secondary">Сброс</a>
+		</div>
+	</form>
 
-<form asp-action="Index" method="get">
-    <div>
-        <label>Поиск по имени: <input type="search" name="SearchString" value="@ViewData["CurrentFilter"]"/></label>
-        <input type="submit" value="Найти" class="btn-default"/>
-        <a asp-action="Index" class="btn btn-secondary">Сброс</a>
-    </div>
-</form>
+	<a asp-action="Create" class="btn btn-primary">Create New</a>
+</div>
 
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParam"]">@Html.DisplayNameFor(model => model.last_name)</a>
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.first_name)
-            </th>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["DareSortParam"]">@Html.DisplayNameFor(model => model.EnrollmentDate)</a>
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Enrollments)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => item.last_name)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.first_name)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.EnrollmentDate)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Enrollments)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
+	<thead>
+		<tr>
+			<th>
+				<a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParam"]">@Html.DisplayNameFor(model => model.last_name)</a>
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.first_name)
+			</th>
+			<th>
+				<a asp-action="Index" asp-route-sortOrder="@ViewData["DareSortParam"]">@Html.DisplayNameFor(model => model.EnrollmentDate)</a>
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Enrollments)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(model => item.last_name)
+				</td>
+				<td>
+					@Html.DisplayFor(model => item.first_name)
+				</td>
+				<td>
+					@Html.DisplayFor(model => item.EnrollmentDate)
+				</td>
+				<td>
+					@Html.DisplayFor(model => item.Enrollments)
+				</td>
+				<td>
+					<a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+					<a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+					<a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+				</td>
+			</tr>
+		}
+	</tbody>
 </table>
