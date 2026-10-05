@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.37614.0 d17.14
+VisualStudioVersion = 17.14.37614.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC", "MVC\MVC.csproj", "{36F4C10E-98FA-4D9E-ADA9-62704B98C571}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContosoUniversity", "ContosoUniversity\ContosoUniversity.csproj", "{BF985A1A-32A0-4CA9-A888-CCE8CA1D8276}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Academy", "Academy\Academy.csproj", "{5B4CE47D-CA5A-4BDA-9B92-A8F8730BC10B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{BF985A1A-32A0-4CA9-A888-CCE8CA1D8276}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF985A1A-32A0-4CA9-A888-CCE8CA1D8276}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF985A1A-32A0-4CA9-A888-CCE8CA1D8276}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B4CE47D-CA5A-4BDA-9B92-A8F8730BC10B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B4CE47D-CA5A-4BDA-9B92-A8F8730BC10B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B4CE47D-CA5A-4BDA-9B92-A8F8730BC10B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B4CE47D-CA5A-4BDA-9B92-A8F8730BC10B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

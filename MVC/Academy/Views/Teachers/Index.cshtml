@@ -1,0 +1,94 @@
+@model IEnumerable<Academy.Models.Teacher>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.work_since)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.rate)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.DisciplinesRelations)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.last_name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.first_name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.middle_name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.birth_date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.photo)
+            </th> *@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.work_since)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.rate)
+            </td>
+            @* <td>
+                @Html.DisplayFor(model => item.DisciplinesRelations)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.last_name)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.first_name)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.middle_name)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.birth_date)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.email)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.phone)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.photo)
+            </td> *@
+            <td>
+                <a asp-action="Edit" asp-route-teacher_id="@item.teacher_id">Edit</a> |
+                <a asp-action="Details" asp-route-teacher_id="@item.teacher_id">Details</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,176 +1,186 @@
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using ContosoUniversity.Data;
 using ContosoUniversity.Models;
 
-public class StudentsController : Controller
+namespace ContosoUniversity.Controllers
 {
-	private readonly ContosoUniversityContext _context;
-
-	public StudentsController(ContosoUniversityContext context)
+	public class StudentsController : Controller
 	{
-		_context = context;
-	}
+		private readonly ContosoUniversityContext _context;
 
-	// GET: STUDENTS
-	public async Task<IActionResult> Index(string sortOrder, string searchString)
-	{
-		ViewData["NameSortParam"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-		ViewData["DateSortParam"] = sortOrder == "Date" ? "date_desc" : "Date";
-		ViewData["CurrentFilter"] = searchString;
-
-		IQueryable<Student> students = from student in _context.Students select student;
-
-		if (!String.IsNullOrEmpty(searchString))
+		public StudentsController(ContosoUniversityContext context)
 		{
-			students = students.Where
+			_context = context;
+		}
+
+		// GET: Students
+		public async Task<IActionResult> Index(string sortOrder, string searchString)
+		{
+			ViewData["NameSortParam"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+			ViewData["DateSortParam"] = sortOrder == "Date" ? "date_desc" : "Date";
+			ViewData["CurrentFilter"] = searchString;
+
+			IQueryable<Student> students = from student in _context.Students select student;
+
+			if (!String.IsNullOrEmpty(searchString))
+			{
+				students = students.Where
 				(
-				s =>
-				s.last_name.Contains(searchString) ||
-				s.first_name.Contains(searchString)
+					s =>
+					s.last_name.Contains(searchString) ||
+					s.first_name.Contains(searchString)
 				);
+			}
+
+			switch (sortOrder)
+			{
+				case "name_desc": students = students.OrderByDescending(s => s.last_name); break;
+				case "date_desc": students = students.OrderByDescending(s => s.EnrollmentDate); break;
+				case "Date": students = students.OrderBy(s => s.EnrollmentDate); break;
+				default: students = students.OrderBy(s => s.last_name); break;
+			}
+
+			return View(await students.AsNoTracking().ToListAsync());
+			//return View(await _context.Students.AsNoTracking().ToListAsync());
+			//return View(await _context.Students.ToListAsync());
 		}
 
-		switch (sortOrder)
+		// GET: Students/Details/5
+		public async Task<IActionResult> Details(int? id)
 		{
-			case "name_desc": students = students.OrderByDescending(s => s.last_name); break;
-			case "date_desc": students = students.OrderByDescending(s => s.EnrollmentDate); break;
-			case "Date": students = students.OrderBy(s => s.EnrollmentDate); break;
-			default: students = students.OrderBy(s => s.last_name); break;
+			if (id == null)
+			{
+				return NotFound();
+			}
+
+			var student = await _context.Students
+				.Include(s => s.Enrollments)
+				.ThenInclude(e => e.Course)
+				.AsNoTracking()
+				.FirstOrDefaultAsync(m => m.ID == id);
+			if (student == null)
+			{
+				return NotFound();
+			}
+
+			return View(student);
 		}
 
-		return View(await students.AsNoTracking().ToListAsync());
-	}
-
-	// GET: STUDENTS/Details/5
-	public async Task<IActionResult> Details(int? id)
-	{
-		if (id == null)
+		// GET: Students/Create
+		public IActionResult Create()
 		{
-			return NotFound();
+			return View();
 		}
 
-		var student = await _context.Students
-			.Include(s => s.Enrollments)
-			.ThenInclude(e => e.Course)
-			.AsNoTracking()
-			.FirstOrDefaultAsync(m => m.ID == id);
-		if (student == null)
+		// POST: Students/Create
+		// To protect from overposting attacks, enable the specific properties you want to bind to.
+		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Create([Bind("ID,LastName,FirstName,EnrollmentDate")] Student student)
 		{
-			return NotFound();
+			if (ModelState.IsValid)
+			{
+				_context.Add(student);
+				await _context.SaveChangesAsync();
+				return RedirectToAction(nameof(Index));
+			}
+			return View(student);
 		}
 
-		return View(student);
-	}
-
-	// GET: STUDENTS/Create
-	public IActionResult Create()
-	{
-		return View();
-	}
-
-	// POST: STUDENTS/Create
-	// To protect from overposting attacks, enable the specific properties you want to bind to.
-	// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-	[HttpPost]
-	[ValidateAntiForgeryToken]
-	public async Task<IActionResult> Create([Bind("ID,last_name,first_name,EnrollmentDate,Enrollments")] Student student)
-	{
-		if (ModelState.IsValid)
+		// GET: Students/Edit/5
+		public async Task<IActionResult> Edit(int? id)
 		{
-			_context.Add(student);
+			if (id == null)
+			{
+				return NotFound();
+			}
+
+			var student = await _context.Students.FindAsync(id);
+			if (student == null)
+			{
+				return NotFound();
+			}
+			return View(student);
+		}
+
+		// POST: Students/Edit/5
+		// To protect from overposting attacks, enable the specific properties you want to bind to.
+		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Edit(int id, [Bind("ID,LastName,FirstName,EnrollmentDate")] Student student)
+		{
+			if (id != student.ID)
+			{
+				return NotFound();
+			}
+
+			if (ModelState.IsValid)
+			{
+				try
+				{
+					_context.Update(student);
+					await _context.SaveChangesAsync();
+				}
+				catch (DbUpdateConcurrencyException)
+				{
+					if (!StudentExists(student.ID))
+					{
+						return NotFound();
+					}
+					else
+					{
+						throw;
+					}
+				}
+				return RedirectToAction(nameof(Index));
+			}
+			return View(student);
+		}
+
+		// GET: Students/Delete/5
+		public async Task<IActionResult> Delete(int? id)
+		{
+			if (id == null)
+			{
+				return NotFound();
+			}
+
+			var student = await _context.Students
+				.FirstOrDefaultAsync(m => m.ID == id);
+			if (student == null)
+			{
+				return NotFound();
+			}
+
+			return View(student);
+		}
+
+		// POST: Students/Delete/5
+		[HttpPost, ActionName("Delete")]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> DeleteConfirmed(int id)
+		{
+			var student = await _context.Students.FindAsync(id);
+			if (student != null)
+			{
+				_context.Students.Remove(student);
+			}
+
 			await _context.SaveChangesAsync();
 			return RedirectToAction(nameof(Index));
 		}
-		return View(student);
-	}
 
-	// GET: STUDENTS/Edit/5
-	public async Task<IActionResult> Edit(int? id)
-	{
-		if (id == null)
+		private bool StudentExists(int id)
 		{
-			return NotFound();
+			return _context.Students.Any(e => e.ID == id);
 		}
-
-		var student = await _context.Students.FindAsync(id);
-		if (student == null)
-		{
-			return NotFound();
-		}
-		return View(student);
-	}
-
-	// POST: STUDENTS/Edit/5
-	// To protect from overposting attacks, enable the specific properties you want to bind to.
-	// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-	[HttpPost]
-	[ValidateAntiForgeryToken]
-	public async Task<IActionResult> Edit(int? id, [Bind("ID,last_name,first_name,EnrollmentDate,Enrollments")] Student student)
-	{
-		if (id != student.ID)
-		{
-			return NotFound();
-		}
-
-		if (ModelState.IsValid)
-		{
-			try
-			{
-				_context.Update(student);
-				await _context.SaveChangesAsync();
-			}
-			catch (DbUpdateConcurrencyException)
-			{
-				if (!StudentExists(student.ID))
-				{
-					return NotFound();
-				}
-				else
-				{
-					throw;
-				}
-			}
-			return RedirectToAction(nameof(Index));
-		}
-		return View(student);
-	}
-
-	// GET: STUDENTS/Delete/5
-	public async Task<IActionResult> Delete(int? id)
-	{
-		if (id == null)
-		{
-			return NotFound();
-		}
-
-		var student = await _context.Students
-			.FirstOrDefaultAsync(m => m.ID == id);
-		if (student == null)
-		{
-			return NotFound();
-		}
-
-		return View(student);
-	}
-
-	// POST: STUDENTS/Delete/5
-	[HttpPost, ActionName("Delete")]
-	[ValidateAntiForgeryToken]
-	public async Task<IActionResult> DeleteConfirmed(int? id)
-	{
-		var student = await _context.Students.FindAsync(id);
-		if (student != null)
-		{
-			_context.Students.Remove(student);
-		}
-
-		await _context.SaveChangesAsync();
-		return RedirectToAction(nameof(Index));
-	}
-
-	private bool StudentExists(int? id)
-	{
-		return _context.Students.Any(e => e.ID == id);
 	}
 }

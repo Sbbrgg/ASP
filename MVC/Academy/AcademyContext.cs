@@ -1,0 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+
+public class AcademyContext(DbContextOptions<AcademyContext> options) : DbContext(options)
+{
+    public DbSet<Academy.Models.Teacher> Teachers { get; set; } = default!;
+    public DbSet<Academy.Models.Student> Students { get; set; } = default!;
+}

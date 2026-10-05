@@ -1,4 +1,4 @@
-@model IEnumerable<ContosoUniversity.Models.Student>
+п»ї@model IEnumerable<ContosoUniversity.Models.Student>
 
 @{
 	ViewData["Title"] = "Index";
@@ -9,9 +9,9 @@
 
 	<form asp-action="Index" method="get">
 		<div>
-			<label>Поиск по имени: <input type="search" name="SearchString" value="@ViewData["CurrentFilter"]" /></label>
-			<input type="submit" value="Найти" class="btn-default" />
-			<a asp-action="Index" class="btn btn-secondary">Сброс</a>
+			<label>РџРѕРёСЃРє РїРѕ РёРјРµРЅРё: <input type="search" name="SearchString" value="@ViewData["CurrentFilter"]" /></label>
+			<input type="submit" value="РќР°Р№С‚Рё" class="btn btn-primary" />
+			<a asp-action="Index" class="btn btn-secondary">РЎР±СЂРѕСЃ</a>
 		</div>
 	</form>
 
@@ -28,10 +28,7 @@
 				@Html.DisplayNameFor(model => model.first_name)
 			</th>
 			<th>
-				<a asp-action="Index" asp-route-sortOrder="@ViewData["DareSortParam"]">@Html.DisplayNameFor(model => model.EnrollmentDate)</a>
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Enrollments)
+				<a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParam"]">@Html.DisplayNameFor(model => model.EnrollmentDate)</a>
 			</th>
 			<th></th>
 		</tr>
@@ -41,16 +38,13 @@
 		{
 			<tr>
 				<td>
-					@Html.DisplayFor(model => item.last_name)
+					@Html.DisplayFor(modelItem => item.last_name)
 				</td>
 				<td>
-					@Html.DisplayFor(model => item.first_name)
+					@Html.DisplayFor(modelItem => item.first_name)
 				</td>
 				<td>
-					@Html.DisplayFor(model => item.EnrollmentDate)
-				</td>
-				<td>
-					@Html.DisplayFor(model => item.Enrollments)
+					@Html.DisplayFor(modelItem => item.EnrollmentDate)
 				</td>
 				<td>
 					<a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
