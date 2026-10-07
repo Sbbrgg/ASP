@@ -1,4 +1,5 @@
-﻿@model IEnumerable<ContosoUniversity.Models.Student>
+﻿﻿@* @model IEnumerable<ContosoUniversity.Models.Student> *@
+@model PaginatedList<Student>
 
 @{
 	ViewData["Title"] = "Index";
@@ -18,40 +19,66 @@
 	<a asp-action="Create" class="btn btn-primary">Create New</a>
 </div>
 
-<table class="table">
-	<thead>
-		<tr>
-			<th>
-				<a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParam"]">@Html.DisplayNameFor(model => model.last_name)</a>
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.first_name)
-			</th>
-			<th>
-				<a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParam"]">@Html.DisplayNameFor(model => model.EnrollmentDate)</a>
-			</th>
-			<th></th>
-		</tr>
-	</thead>
-	<tbody>
-		@foreach (var item in Model)
-		{
+<div class="paginator">
+	<table class="table">
+		<thead>
 			<tr>
-				<td>
-					@Html.DisplayFor(modelItem => item.last_name)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.first_name)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.EnrollmentDate)
-				</td>
-				<td>
-					<a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-					<a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-					<a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-				</td>
+				<th>
+					@* <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParam"]">@Html.DisplayNameFor(model => model.LastName)</a> *@
+					<a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParam"]">LastName</a>
+				</th>
+				<th>
+					@* @Html.DisplayNameFor(model => model.FirstName) *@
+					First name
+				</th>
+				<th>
+					@* <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParam"]">@Html.DisplayNameFor(model => model.EnrollmentDate)</a> *@
+					<a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParam"]">EnrollmentDate</a>
+				</th>
+				<th></th>
 			</tr>
-		}
-	</tbody>
-</table>
+		</thead>
+		<tbody>
+			@foreach (var item in Model)
+			{
+				<tr>
+					<td>
+						@Html.DisplayFor(modelItem => item.last_name)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.first_name)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.EnrollmentDate)
+					</td>
+					<td>
+						<a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+						<a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+						<a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>
+
+@{
+	string prevDisabled = Model.HasPreviousPage ? "" : "disabled";
+	string nextDisabled = Model.HasNextPage ? "" : "disabled";
+}
+
+<div class="pagination-controls">
+	<a asp-action="Index"
+	   asp-route-pageNumber="@(Model.PageIndex - 1)"
+	   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+	   class="btn btn-default @prevDisabled">
+		Prev
+	</a>
+
+	<a asp-action="Index"
+	   asp-route-pageNumber="@(Model.PageIndex + 1)"
+	   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+	   class="btn btn-default @nextDisabled">
+		Next
+	</a>
+</div>

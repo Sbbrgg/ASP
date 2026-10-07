@@ -13,7 +13,7 @@ namespace Academy.Models
 		public int group { get; set; }
 
 		//			Navigation properties:
-		[NotMapped]
+		//[NotMapped]
 		public Group Group { get; set; }
 	}
 }

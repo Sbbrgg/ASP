@@ -1,15 +1,15 @@
-@model PaginatedList<Teacher>
+@model PaginatedList<Direction>
 
 @{
     ViewData["Title"] = "Index";
 }
 
 <div class="controls">
-    <h1>Teachers</h1>
+    <h1>Directions</h1>
 
     <form asp-action="Index" method="get">
         <div>
-            <label>Поиск по имени: <input type="search" name="SearchString" value="@ViewData["CurrentFilter"]" /></label>
+            <label>Поиск: <input type="search" name="SearchString" value="@ViewData["CurrentFilter"]" /></label>
             <input type="submit" value="Найти" class="btn btn-primary" />
             <a asp-action="Index" class="btn btn-secondary">Сброс</a>
         </div>
@@ -24,17 +24,10 @@
             <tr>
                 <th>
                     <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
-                        @Html.DisplayNameFor(model => model.First().FullName)
+                        @Html.DisplayNameFor(model => model.First().direction_name)
                     </a>
                 </th>
-                <th>
-                    <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
-                        @Html.DisplayNameFor(model => model.First().work_since)
-                    </a>
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.First().rate)
-                </th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -42,17 +35,12 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(model => item.FullName)
+                        @Html.DisplayFor(model => item.direction_name)
                     </td>
                     <td>
-                        @Html.DisplayFor(model => item.work_since)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(model => item.rate)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-teacher_id="@item.teacher_id">Edit</a> |
-                        <a asp-action="Details" asp-route-teacher_id="@item.teacher_id">Details</a>
+                        <a asp-action="Edit" asp-route-direction_id="@item.direction_id">Edit</a> |
+                        <a asp-action="Details" asp-route-direction_id="@item.direction_id">Details</a> |
+                        <a asp-action="Delete" asp-route-direction_id="@item.direction_id">Delete</a>
                     </td>
                 </tr>
             }

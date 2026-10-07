@@ -1,88 +1,85 @@
-@model IEnumerable<Academy.Models.Student>
+@model PaginatedList<Student>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<div class="controls">
+    <h1>Students</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FullName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.group)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Group)
-            </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.last_name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.first_name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.middle_name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.birth_date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.phone)
-            </th> 
-            <th>
-                @Html.DisplayNameFor(model => model.photo)
-            </th> *@
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => item.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.group)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Group)
-            </td>
-            @* <td>
-                @Html.DisplayFor(model => item.last_name)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.first_name)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.middle_name)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.birth_date)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.email)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.phone)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.photo)
-            </td> *@
-            <td>
-                <a asp-action="Edit" asp-route-stud_id="@item.stud_id">Edit</a> |
-                <a asp-action="Details" asp-route-stud_id="@item.stud_id">Details</a>
-            </td>
-        </tr>
+    <form asp-action="Index" method="get">
+        <div>
+            <label>Поиск по имени: <input type="search" name="SearchString" value="@ViewData["CurrentFilter"]" /></label>
+            <input type="submit" value="Найти" class="btn btn-primary" />
+            <a asp-action="Index" class="btn btn-secondary">Сброс</a>
+        </div>
+    </form>
+
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</div>
+
+<div class="paginator">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                        @Html.DisplayNameFor(model => model.First().FullName)
+                    </a>
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().group)
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                        @Html.DisplayNameFor(model => model.First().birth_date)
+                    </a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => item.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.group)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.birth_date)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-stud_id="@item.stud_id">Edit</a> |
+                        <a asp-action="Details" asp-route-stud_id="@item.stud_id">Details</a> |
+                        <a asp-action="Delete" asp-route-stud_id="@item.stud_id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@{
+    string prevDisabled = Model.HasPreviousPage ? "" : "disabled";
+    string nextDisabled = Model.HasNextPage ? "" : "disabled";
 }
-    </tbody>
-</table>
+
+<div class="pagination-controls">
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="@(Model.PageIndex - 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-default @prevDisabled">
+        Prev
+    </a>
+
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="@(Model.PageIndex + 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-default @nextDisabled">
+        Next
+    </a>
+</div>

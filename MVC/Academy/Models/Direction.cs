@@ -15,6 +15,6 @@ namespace Academy.Models
 		public string direction_name { get; set; }
 
 		//				Navigation properties:
-		public ICollection<Group> Groups { get; set; }
+		public ICollection<Group>? Groups { get; set; }
 	}
 }

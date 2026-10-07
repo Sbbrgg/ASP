@@ -1,7 +1,7 @@
-
+using Academy;
+using Academy.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Academy.Models;
 
 public class StudentsController : Controller
 {
@@ -12,14 +12,43 @@ public class StudentsController : Controller
         _context = context;
     }
 
-    // GET: STUDENTS
-    public async Task<IActionResult> Index()    
-    {
-        return View(await _context.Students.ToListAsync());
-    }
+	// GET: STUDENTS
+	public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
+	{
+		ViewData["CurrentSort"] = sortOrder;
+		ViewData["NameSortParam"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+		ViewData["DateSortParam"] = sortOrder == "Date" ? "date_desc" : "Date";
 
-    // GET: STUDENTS/Details/5
-    public async Task<IActionResult> Details(int? stud_id)
+		if (searchString != null)
+			pageNumber = 1;
+		else
+			searchString = currentFilter;
+
+		ViewData["CurrentFilter"] = searchString;
+
+		IQueryable<Student> students = _context.Students;
+
+		if (!string.IsNullOrEmpty(searchString))
+		{
+			students = students.Where(s =>
+				s.last_name.Contains(searchString) ||
+				s.first_name.Contains(searchString));
+		}
+
+		students = sortOrder switch
+		{
+			"name_desc" => students.OrderByDescending(s => s.last_name),
+			"date_desc" => students.OrderByDescending(s => s.birth_date),
+			"Date" => students.OrderBy(s => s.birth_date),
+			_ => students.OrderBy(s => s.last_name)
+		};
+
+		int pageSize = 5;
+		return View(await PaginatedList<Student>.CreateAsync(students.AsNoTracking(), pageNumber ?? 1, pageSize));
+	}
+
+	// GET: STUDENTS/Details/5
+	public async Task<IActionResult> Details(int? stud_id)
     {
         if (stud_id == null)
         {
