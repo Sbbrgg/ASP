@@ -34,20 +34,20 @@ namespace ContosoUniversity.Controllers
 				students = students.Where
 				(
 					s =>
-					s.last_name.Contains(searchString) ||
-					s.first_name.Contains(searchString)
+					s.LastName.Contains(searchString) ||
+					s.FirstName.Contains(searchString)
 				);
 			}
 
 			switch (sortOrder)
 			{
-				case "name_desc": students = students.OrderByDescending(s => s.last_name); break;
+				case "name_desc": students = students.OrderByDescending(s => s.LastName); break;
 				case "date_desc": students = students.OrderByDescending(s => s.EnrollmentDate); break;
 				case "Date": students = students.OrderBy(s => s.EnrollmentDate); break;
-				default: students = students.OrderBy(s => s.last_name); break;
+				default: students = students.OrderBy(s => s.LastName); break;
 			}
 
-			int pageSize = 5;
+			int pageSize = 2;
 			return View
 			(
 				await PaginatedList<Student>.CreateAsync

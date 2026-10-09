@@ -1,0 +1,111 @@
+@* @model IEnumerable<Academy.Models.Group> *@
+@model PaginatedList<Group>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @* @Html.DisplayNameFor(model => model.group_name) *@
+                Group Name
+            </th>
+            <th>
+                @* @Html.DisplayNameFor(model => model.direction) *@
+                Direction
+            </th>
+            <th>
+                @* @Html.DisplayNameFor(model => model.learning_days) *@
+                Learning Days
+            </th>
+            <th>
+                @* @Html.DisplayNameFor(model => model.start_time) *@
+                Start Time
+            </th>
+            <th>
+                @* @Html.DisplayNameFor(model => model.start_date) *@
+                Start Date
+            </th>
+            <th>
+                @* @Html.DisplayNameFor(model => model.Direction) *@
+                Direction
+            </th>
+            <th>
+                @* @Html.DisplayNameFor(model => model.Students) *@
+                Students
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.group_name)
+            </td>
+            <td>
+                @* @Html.DisplayFor(model => item.direction) *@
+                @item.Direction?.direction_name
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.learning_days)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.start_time)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.start_date)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Students)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.group_id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.group_id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.group_id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+@{
+    string prevDisabled = Model.HasPreviousPage ? "" : "disabled";
+    string nextDisabled = Model.HasNextPage ? "" : "disabled";
+}
+
+<div class="pagination-controls">
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="@(Model.PageIndex - 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-default @prevDisabled">
+        Prev
+    </a>
+    <div class="pages">
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            <a asp-action="Index"
+               asp-route-sortOrder="@ViewData["CurrentSort"]"
+               asp-route-pageNumber="@i"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               class="page @(i == Model.PageIndex ? "current-page" : "")">
+                @i
+            </a>
+        }
+    </div>
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="@(Model.PageIndex + 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-default @nextDisabled">
+        Next
+    </a>
+</div>

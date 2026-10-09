@@ -43,10 +43,10 @@
 			{
 				<tr>
 					<td>
-						@Html.DisplayFor(modelItem => item.last_name)
+						@Html.DisplayFor(modelItem => item.LastName)
 					</td>
 					<td>
-						@Html.DisplayFor(modelItem => item.first_name)
+						@Html.DisplayFor(modelItem => item.FirstName)
 					</td>
 					<td>
 						@Html.DisplayFor(modelItem => item.EnrollmentDate)
@@ -74,7 +74,24 @@
 	   class="btn btn-default @prevDisabled">
 		Prev
 	</a>
-
+	<div>@Model.PageIndex</div>
+	<div class="pages">
+		@for (int i = 0; i < Model.TotalPages; i++)
+		{
+			@if (i + 1 == Model.PageIndex)
+			{
+				<a asp-action="Index" asp-route-pageNumber="@(i+1)" class="page current-page">
+					@(i + 1)
+				</a>
+			}
+			else
+			{
+				<a asp-action="Index" asp-route-pageNumber="@(i+1)" class="page">
+					@(i + 1)
+				</a>
+			}
+		}
+	</div>
 	<a asp-action="Index"
 	   asp-route-pageNumber="@(Model.PageIndex + 1)"
 	   asp-route-currentFilter="@ViewData["CurrentFilter"]"

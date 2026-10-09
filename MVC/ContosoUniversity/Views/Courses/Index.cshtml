@@ -1,4 +1,5 @@
-@model IEnumerable<ContosoUniversity.Models.Course>
+@* @model IEnumerable<ContosoUniversity.Models.Course> *@
+@model PaginatedList<Course>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,13 +14,17 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                @* @Html.DisplayNameFor(model => model.Title) *@
+                @* <a asp-action="Index"></a> *@
+                Title
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Credits)
+                @* @Html.DisplayNameFor(model => model.Credits) *@
+                Credits
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Enrollments)
+                @* @Html.DisplayNameFor(model => model.Enrollments) *@
+                Enrollments
             </th>
             <th></th>
         </tr>
@@ -45,3 +50,42 @@
 }
     </tbody>
 </table>
+
+@{
+    string prevDisabled = Model.HasPreviousPage ? "" : "disabled";
+    string nextDisabled = Model.HasNextPage ? "" : "disabled";
+}
+
+<div class="pagination-controls">
+    <a asp-action="Index"
+       asp-route-pageNumber="@(Model.PageIndex - 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-default @prevDisabled">
+        Prev
+    </a>
+    <div>@Model.PageIndex</div>
+    <div class="pages">
+        @for (int i = 0; i < Model.TotalPages; i++)
+        {
+        @if (i + 1 == Model.PageIndex)
+        {
+        <a asp-action="Index" asp-route-pageNumber="@(i+1)" class="page current-page">
+            @(i + 1)
+        </a>
+        }
+        else
+        {
+        <a asp-action="Index" asp-route-pageNumber="@(i+1)" class="page">
+            @(i + 1)
+        </a>
+        }
+        }
+    </div>
+    <a asp-action="Index"
+       asp-route-pageNumber="@(Model.PageIndex + 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-default @nextDisabled">
+        Next
+    </a>
+</div>
+

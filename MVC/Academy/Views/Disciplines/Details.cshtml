@@ -1,0 +1,38 @@
+@model Academy.Models.Discipline
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Discipline</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.discipline_name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.discipline_name)
+        </dd>
+    </dl>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.number_of_lessons)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.number_of_lessons)
+        </dd>
+    </dl>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TeachersRelations)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TeachersRelations)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.discipline_id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
