@@ -44,7 +44,8 @@ public class StudentsController : Controller
 		};
 
 		int pageSize = 5;
-		return View(await PaginatedList<Student>.CreateAsync(students.AsNoTracking(), pageNumber ?? 1, pageSize));
+        return View(await PaginatedList<Student>.CreateAsync(students.AsNoTracking(), pageNumber ?? 1, pageSize));
+
 	}
 
 	// GET: STUDENTS/Details/5

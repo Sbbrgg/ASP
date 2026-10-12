@@ -19,7 +19,7 @@ namespace Academy.Controllers
 		}
 
 		// GET: Directions
-		public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
+		public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber, int? id)
 		{
 			ViewData["CurrentSort"] = sortOrder;
 			ViewData["NameSortParam"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
@@ -43,7 +43,25 @@ namespace Academy.Controllers
 			};
 
 			int pageSize = 5;
-			return View(await PaginatedList<Direction>.CreateAsync(directions.AsNoTracking(), pageNumber ?? 1, pageSize));
+			PaginatedList<Direction> paginatedDirections = await PaginatedList<Direction>.CreateAsync
+				(
+					directions.AsNoTracking(),
+					pageNumber ?? 1,
+					pageSize
+				);
+			if(id !=null)
+			{
+				ViewData["DirectionID"] = id.Value;
+
+				List<Group> groups = await _context.Groups
+					.Where(g => g.direction == id.Value)
+					.OrderBy(g => g.group_name)
+					.AsNoTracking()
+					.ToListAsync();
+				ViewData["Groups"] = groups;
+			}
+			//return View(await PaginatedList<Direction>.CreateAsync(directions.AsNoTracking(), pageNumber ?? 1, pageSize));
+			return View(paginatedDirections);
 		}
 
 		// GET: Directions/Details/5

@@ -1,83 +1,113 @@
 @model PaginatedList<Direction>
 
 @{
-    ViewData["Title"] = "Index";
+	ViewData["Title"] = "Index";
 }
 
 <div class="controls">
-    <h1>Directions</h1>
+	<h1>Directions</h1>
 
-    <form asp-action="Index" method="get">
-        <div>
-            <label>Поиск: <input type="search" name="SearchString" value="@ViewData["CurrentFilter"]" /></label>
-            <input type="submit" value="Найти" class="btn btn-primary" />
-            <a asp-action="Index" class="btn btn-secondary">Сброс</a>
-        </div>
-    </form>
+	<form asp-action="Index" method="get">
+		<div>
+			<label>Поиск: <input type="search" name="SearchString" value="@ViewData["CurrentFilter"]" /></label>
+			<input type="submit" value="Найти" class="btn btn-primary" />
+			<a asp-action="Index" class="btn btn-secondary">Сброс</a>
+		</div>
+	</form>
 
-    <a asp-action="Create" class="btn btn-primary">Create New</a>
+	<a asp-action="Create" class="btn btn-primary">Create New</a>
 </div>
 
 <div class="paginator">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
-                        @Html.DisplayNameFor(model => model.First().direction_name)
-                    </a>
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(model => item.direction_name)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-direction_id="@item.direction_id">Edit</a> |
-                        <a asp-action="Details" asp-route-direction_id="@item.direction_id">Details</a> |
-                        <a asp-action="Delete" asp-route-direction_id="@item.direction_id">Delete</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>
+					<a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+						@Html.DisplayNameFor(model => model.First().direction_name)
+					</a>
+				</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model)
+			{
+				<tr>
+					<td>
+						@Html.DisplayFor(model => item.direction_name)
+					</td>
+					<td>
+						<a asp-action="Index"
+						   asp-route-id="@item.direction_id"
+						   asp-route-sortOrder="@ViewData["CurrentSort"]"
+						   asp-route-pageNumber="@Model.PageIndex"
+						   asp-route-currentFilter="@ViewData["CurrentFilter"]">Select</a> |
+
+						<a asp-action="Edit" asp-route-id="@item.direction_id">Edit</a> |
+						<a asp-action="Details" asp-route-id="@item.direction_id">Details</a> |
+						<a asp-action="Delete" asp-route-id="@item.direction_id">Delete</a>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
 </div>
 
 @{
-    string prevDisabled = Model.HasPreviousPage ? "" : "disabled";
-    string nextDisabled = Model.HasNextPage ? "" : "disabled";
+	string prevDisabled = Model.HasPreviousPage ? "" : "disabled";
+	string nextDisabled = Model.HasNextPage ? "" : "disabled";
 }
 
 <div class="pagination-controls">
-    <a asp-action="Index"
-       asp-route-sortOrder="@ViewData["CurrentSort"]"
-       asp-route-pageNumber="@(Model.PageIndex - 1)"
-       asp-route-currentFilter="@ViewData["CurrentFilter"]"
-       class="btn btn-default @prevDisabled">
-        Prev
-    </a>
-    <div class="pages">
-        @for (int i = 1; i <= Model.TotalPages; i++)
-        {
-            <a asp-action="Index"
-               asp-route-sortOrder="@ViewData["CurrentSort"]"
-               asp-route-pageNumber="@i"
-               asp-route-currentFilter="@ViewData["CurrentFilter"]"
-               class="page @(i == Model.PageIndex ? "current-page" : "")">
-                @i
-            </a>
-        }
-    </div>
-    <a asp-action="Index"
-       asp-route-sortOrder="@ViewData["CurrentSort"]"
-       asp-route-pageNumber="@(Model.PageIndex + 1)"
-       asp-route-currentFilter="@ViewData["CurrentFilter"]"
-       class="btn btn-default @nextDisabled">
-        Next
-    </a>
+	<a asp-action="Index"
+	   asp-route-sortOrder="@ViewData["CurrentSort"]"
+	   asp-route-pageNumber="@(Model.PageIndex - 1)"
+	   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+	   class="btn btn-default @prevDisabled">
+		Prev
+	</a>
+	<div class="pages">
+		@for (int i = 1; i <= Model.TotalPages; i++)
+		{
+			<a asp-action="Index"
+			   asp-route-sortOrder="@ViewData["CurrentSort"]"
+			   asp-route-pageNumber="@i"
+			   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+			   class="page @(i == Model.PageIndex ? "current-page" : "")">
+				@i
+			</a>
+		}
+	</div>
+	<a asp-action="Index"
+	   asp-route-sortOrder="@ViewData["CurrentSort"]"
+	   asp-route-pageNumber="@(Model.PageIndex + 1)"
+	   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+	   class="btn btn-default @nextDisabled">
+		Next
+	</a>
 </div>
+
+@if (ViewData["Groups"] is List<Group> groups)
+{
+	<h3>Группы направления</h3>
+	<table>
+		<thead>
+			<tr>
+				<th>Название группы</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (Group group in groups)
+			{
+				<tr>
+					<td>@group.group_name</td>
+					<td>
+						<a asp-action="Details" asp-controller="Groups" asp-route-group_id="@group.group_id">Details</a>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}

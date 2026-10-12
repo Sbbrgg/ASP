@@ -1,0 +1,140 @@
+﻿﻿@* @model IEnumerable<ContosoUniversity.Models.Instructor> *@
+@model ContosoUniversity.Models.ViewModels.InstructorIndexData
+
+@{
+	ViewData["Title"] = "Instructors";
+}
+
+<h1>Instructors</h1>
+
+<p>
+	<a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+	<thead>
+		<tr>
+			<th>Last name</th>
+			<th>First name</th>
+			<th>Hire date</th>
+			<th>Office</th>
+			<th>Courses</th>
+			@* <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HireDate)
+            </th> *@
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (Instructor item in Model.Instructors)
+		{
+			string selectedRow = "";
+			if (item.ID == (int?)ViewData["InstructorID"]) selectedRow = "table-success";
+
+			<tr class="@selectedRow">
+				<td>
+					@Html.DisplayFor(modelItem => item.LastName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.FirstName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.HireDate)
+				</td>
+				<td>
+					<a asp-action="Index" asp-route-id="@item.ID">Select</a> |
+					<a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+					<a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+					<a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+				</td>
+				<td>
+					@if (item.OfficeAssignment != null)
+					{
+						@item.OfficeAssignment.Location
+						;
+					}
+				</td>
+				<td>
+					@foreach (CourseAssignment ca in item.CourseAssignments)
+					{
+						@ca.Course.CourseID @ca.Course.Title
+				
+						<br />
+					}
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+@if (Model.Courses != null)
+{
+	<h3>Курсы, которые ведет выбранный инструктор:</h3>
+	<table class="table">
+		<thead>
+			<tr>
+				<th></th>
+				<th>Number</th>
+				<th>Title</th>
+				<th>Department</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			@foreach (Course course in Model.Courses)
+			{
+				string selectedRow = "";
+				if (course.CourseID == (int?)ViewData["CourseID"]) selectedRow = "table-success";
+				<tr class="@selectedRow">
+					<td>@Html.ActionLink("Select", "Index", new { courseID = course.CourseID })</td>
+					<td>@course.CourseID</td>
+					<td>@course.Title</td>
+					<td>@course.Department.Name</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+
+@{
+	string prevDisabled = Model.Instructors.HasPreviousPage ? "" : "disabled";
+	string nextDisabled = Model.Instructors.HasNextPage ? "" : "disabled";
+}
+
+<div class="pagination-controls">
+	<a asp-action="Index"
+	   asp-route-pageNumber="@(Model.Instructors.PageIndex - 1)"
+	   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+	   class="btn btn-default @prevDisabled">
+		Prev
+	</a>
+	<div>@Model.Instructors.PageIndex</div>
+	<div class="pages">
+		@for (int i = 0; i < Model.Instructors.TotalPages; i++)
+		{
+			@if (i + 1 == Model.Instructors.PageIndex)
+			{
+				<a asp-action="Index" asp-route-pageNumber="@(i+1)" class="page current-page">
+					@(i + 1)
+				</a>
+			}
+			else
+			{
+				<a asp-action="Index" asp-route-pageNumber="@(i+1)" class="page">
+					@(i + 1)
+				</a>
+			}
+		}
+	</div>
+	<a asp-action="Index"
+	   asp-route-pageNumber="@(Model.Instructors.PageIndex + 1)"
+	   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+	   class="btn btn-default @nextDisabled">
+		Next
+	</a>
+</div>

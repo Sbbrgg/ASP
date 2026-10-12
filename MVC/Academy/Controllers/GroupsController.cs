@@ -13,7 +13,7 @@ public class GroupsController : Controller
     }
 
 	// GET: GROUPS
-	public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
+	public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber, int? group_id)
 	{
 		ViewData["CurrentSort"] = sortOrder;
 		ViewData["NameSortParam"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
@@ -40,7 +40,26 @@ public class GroupsController : Controller
 		};
 
 		int pageSize = 5;
-		return View(await PaginatedList<Group>.CreateAsync(groups.AsNoTracking(), pageNumber ?? 1, pageSize));
+        //return View(await PaginatedList<Group>.CreateAsync(groups.AsNoTracking(), pageNumber ?? 1, pageSize));
+
+        List<Group> paginatedGroups = await PaginatedList<Group>.CreateAsync
+            (
+                groups.AsNoTracking(),
+                pageNumber ?? 1,
+                pageSize
+            );
+        if(group_id != null)
+        {
+            ViewData["GroupID"] = group_id.Value;
+            List<Student> students = await _context.Students
+                .Where(s => s.group == group_id.Value)
+                .OrderBy(s => s.last_name)
+                .ThenBy(s => s.first_name)
+                .AsNoTracking()
+                .ToListAsync();
+            ViewData["Students"] = students;
+        }
+        return View(paginatedGroups);
 	}
 
 	// GET: GROUPS/Details/5
